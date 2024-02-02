@@ -1,0 +1,49 @@
+.cell {
+  width: 20px;
+  height: 20px;
+  border: 0.25px solid rgb(209, 209, 209);
+  margin: 0;
+  padding: 0;
+}
+
+.visited-cell {
+  animation: visitedNodeAnimation;
+  animation-fill-mode: forwards;
+  animation-duration: 0.2s;
+}
+
+.shortest-path-cell {
+  background-color: black;
+  animation: shortestPathNodeAnimation;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+.start-node {
+  background-color: green !important;
+}
+
+.end-node {
+  background-color: red !important;
+}
+
+@keyframes shortestPathNodeAnimation {
+  from {
+    background-color: black;
+  }
+
+  to {
+    background-color: rgb(251, 255, 0);
+  }
+}
+
+/* Define the animation for visited nodes */
+@keyframes visitedNodeAnimation {
+  from {
+    background-color: white;
+  }
+
+  to {
+    background-color: black;
+  }
+}

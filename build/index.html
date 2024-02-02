@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dijkstra Algorithm Visualization</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/cells.css" />
+    <link rel="stylesheet" href="./css/controlBar.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="grid-control-bar">
+        <div class="selection">
+          <label for="select Algorithm">Select an Algorithm:</label>
+          <select name="Select Algorithm" id="algorithm-selector"></select>
+        </div>
+        <div class="selection">
+          <label for="Speed Selector">Set Speed: </label>
+          <input
+            name="Speed Selector"
+            min="0.01"
+            max="0.2"
+            step="0.01"
+            type="range"
+            value="0.1"
+            id="visualisation-speed-selector"
+          />
+        </div>
+        <button id="learn-more-btn">Learn More</button>
+        <!-- <button>Clear Paths</button>
+          <button>Clear Walls</button> -->
+        <button id="start-btn">Start</button>
+        <div class="d-pad-controls">
+          <div class="start-node-controls d-pad">
+            <button class="up" id="up-start">U</button>
+            <button class="left" id="left-start">L</button>
+            <button class="right" id="right-start">R</button>
+            <button class="down" id="down-start">D</button>
+          </div>
+      </div>
+    </header>
+    <table id="grid-table" cellspacing="0"></table>
+    <script>
+      var exports = {};
+    </script>
+    <script data-main="./script" src="require.js"></script>
+  </body>
+</html>
