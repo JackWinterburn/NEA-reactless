@@ -20,7 +20,7 @@ define(["require", "exports"], function (require, exports) {
                     }
                     cell.onclick = () => {
                         console.log(cell.id);
-                        console.log("Node details:", currentNode);
+                        console.log("Node details:", gridNodes[i][j]);
                     };
                 }
             }

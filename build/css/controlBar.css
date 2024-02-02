@@ -1,6 +1,6 @@
 .grid-control-bar {
   width: 100vw;
-  height: 15vh;
+  height: 25vh;
   background-color: rgb(223, 223, 223);
   display: flex;
   justify-content: space-around;

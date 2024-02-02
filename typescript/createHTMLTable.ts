@@ -30,7 +30,7 @@ export function createHTMLTableFromNodes(
 
         cell.onclick = () => {
           console.log(cell.id);
-          console.log("Node details:", currentNode);
+          console.log("Node details:", gridNodes[i][j]);
         };
       }
     }

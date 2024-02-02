@@ -5,8 +5,8 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     node_1 = __importDefault(node_1);
-    const startNode = new node_1.default(10, 2, true);
-    const endNode = new node_1.default(8, 8, false, true);
+    let startNode = new node_1.default(10, 2, true);
+    let endNode = new node_1.default(8, 8, false, true);
     const gridNodes = (0, createGrid_1.createGrid)(startNode, endNode);
     const ROW_COUNT = 20;
     const COL_COUNT = 20;
@@ -25,6 +25,59 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
         visualisationSpeedSelector.onchange = () => (VISUALISATION_SPEED = Number(visualisationSpeedSelector.value));
     }
     (0, createHTMLTable_1.createHTMLTableFromNodes)(ROW_COUNT, COL_COUNT, gridNodes);
+    function updateGrid(node, direction) {
+        const { row, col, isStart, isEnd } = node;
+        const cell = document.getElementById(`${row}-${col}`);
+        if (cell instanceof HTMLTableCellElement) {
+            let newRow = row;
+            let newCol = col;
+            switch (direction) {
+                case "up":
+                    newRow = Math.max(0, row - 1);
+                    break;
+                case "left":
+                    newCol = Math.max(0, col - 1);
+                    break;
+                case "right":
+                    newCol = Math.min(COL_COUNT - 1, col + 1);
+                    break;
+                case "down":
+                    newRow = Math.min(ROW_COUNT - 1, row + 1);
+                    break;
+            }
+            if (isStart) {
+                startNode.isStart = false;
+                startNode = gridNodes[newRow][newCol];
+                startNode.isStart = true;
+                cell.classList.remove("start-node");
+                const newCell = document.getElementById(`${newRow}-${newCol}`);
+                if (newCell instanceof HTMLTableCellElement) {
+                    newCell.classList.add("start-node");
+                }
+            }
+            else if (isEnd) {
+                endNode.isEnd = false;
+                endNode = gridNodes[newRow][newCol];
+                endNode.isEnd = true;
+                cell.classList.remove("end-node");
+                const newCell = document.getElementById(`${newRow}-${newCol}`);
+                if (newCell instanceof HTMLTableCellElement) {
+                    newCell.classList.add("end-node");
+                }
+            }
+        }
+    }
+    const directions = ["up", "left", "right", "down"];
+    directions.forEach(direction => {
+        const startControl = document.getElementById(`${direction}-start`);
+        const endControl = document.getElementById(`${direction}-end`);
+        if (startControl instanceof HTMLButtonElement) {
+            startControl.onclick = () => updateGrid(startNode, direction);
+        }
+        if (endControl instanceof HTMLButtonElement) {
+            endControl.onclick = () => updateGrid(endNode, direction);
+        }
+    });
     const startBtn = document.getElementById("start-btn");
     function runVisualisation() {
         const [visitedNodes, shortestPathNodes] = ALGORITHMS[SELECTED_ALGORITHM](startNode, endNode, gridNodes);
