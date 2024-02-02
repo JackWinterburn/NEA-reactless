@@ -7,14 +7,14 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
     node_1 = __importDefault(node_1);
     let startNode = new node_1.default(10, 2, true);
     let endNode = new node_1.default(8, 8, false, true);
-    const gridNodes = (0, createGrid_1.createGrid)(startNode, endNode);
     const ROW_COUNT = 20;
-    const COL_COUNT = 20;
+    const COL_COUNT = 40;
     const ALGORITHMS = {
         Dijkstra: dijkstra_1.dijkstra,
     };
     let SELECTED_ALGORITHM = "Dijkstra";
     let VISUALISATION_SPEED = 0.1;
+    const gridNodes = (0, createGrid_1.createGrid)(startNode, endNode, ROW_COUNT, COL_COUNT);
     const algorithmSelector = document.getElementById("algorithm-selector");
     if (algorithmSelector instanceof HTMLSelectElement) {
         Object.keys(ALGORITHMS).forEach((algorithm) => algorithmSelector.add(new Option(algorithm)));
@@ -25,7 +25,7 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
         visualisationSpeedSelector.onchange = () => (VISUALISATION_SPEED = Number(visualisationSpeedSelector.value));
     }
     (0, createHTMLTable_1.createHTMLTableFromNodes)(ROW_COUNT, COL_COUNT, gridNodes);
-    function updateGrid(node, direction) {
+    function updateTerminalNodePositions(node, direction) {
         const { row, col, isStart, isEnd } = node;
         const cell = document.getElementById(`${row}-${col}`);
         if (cell instanceof HTMLTableCellElement) {
@@ -68,16 +68,47 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
         }
     }
     const directions = ["up", "left", "right", "down"];
-    directions.forEach(direction => {
+    directions.forEach((direction) => {
         const startControl = document.getElementById(`${direction}-start`);
         const endControl = document.getElementById(`${direction}-end`);
         if (startControl instanceof HTMLButtonElement) {
-            startControl.onclick = () => updateGrid(startNode, direction);
+            startControl.onclick = () => updateTerminalNodePositions(startNode, direction);
         }
         if (endControl instanceof HTMLButtonElement) {
-            endControl.onclick = () => updateGrid(endNode, direction);
+            endControl.onclick = () => updateTerminalNodePositions(endNode, direction);
         }
     });
+    function clearPaths() {
+        gridNodes.forEach((row) => {
+            row.forEach((node) => {
+                node.isVisited = false;
+                const cell = document.getElementById(`${node.row}-${node.col}`);
+                if (cell instanceof HTMLTableCellElement) {
+                    cell.classList.remove("visited-cell");
+                    cell.classList.remove("shortest-path-cell");
+                }
+            });
+        });
+    }
+    const clearPathsBtn = document.getElementById("clear-paths-btn");
+    if (clearPathsBtn instanceof HTMLButtonElement) {
+        clearPathsBtn.onclick = () => clearPaths();
+    }
+    function clearWalls() {
+        gridNodes.forEach((row) => {
+            row.forEach((node) => {
+                node.isWall = false;
+                const cell = document.getElementById(`${node.row}-${node.col}`);
+                if (cell instanceof HTMLTableCellElement) {
+                    cell.classList.remove("wall-node");
+                }
+            });
+        });
+    }
+    const clearWallsBtn = document.getElementById("clear-walls-btn");
+    if (clearWallsBtn instanceof HTMLButtonElement) {
+        clearWallsBtn.onclick = () => clearWalls();
+    }
     const startBtn = document.getElementById("start-btn");
     function runVisualisation() {
         const [visitedNodes, shortestPathNodes] = ALGORITHMS[SELECTED_ALGORITHM](startNode, endNode, gridNodes);
@@ -93,7 +124,7 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
                 const shortestPathCell = document.getElementById(`${node.row}-${node.col}`);
                 if (shortestPathCell) {
                     shortestPathCell.classList.replace("visited-cell", "shortest-path-cell");
-                    shortestPathCell.style.animationDelay = `${(idx + 1) * 0.2 - VISUALISATION_SPEED}s`;
+                    shortestPathCell.style.animationDelay = `${(idx + 1) * (0.2 - VISUALISATION_SPEED)}s`;
                 }
             });
         };

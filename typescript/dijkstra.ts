@@ -8,7 +8,6 @@ export function dijkstra(
 ): [Node[], Node[]] {
   const visitedNodes: Node[] = [];
   const shortestPathNodes: Node[] = [];
-  console.log(startNode);
   const unvisitedNodes = new PriorityQueue<Node>();
 
   const distances: { [key: string]: number } = {};
@@ -43,13 +42,18 @@ export function dijkstra(
       }
 
       currNode.neighbours.forEach((neighbor) => {
-        const distanceToNeighbor =
-          distances[`${currNode.row}-${currNode.col}`] + 1;
+        if (!neighbor.isWall) {
+          // Skip wall nodes
+          const distanceToNeighbor =
+            distances[`${currNode.row}-${currNode.col}`] + 1;
 
-        if (distanceToNeighbor < distances[`${neighbor.row}-${neighbor.col}`]) {
-          distances[`${neighbor.row}-${neighbor.col}`] = distanceToNeighbor;
-          prevNodes[`${neighbor.row}-${neighbor.col}`] = currNode;
-          unvisitedNodes.enqueue(neighbor, distanceToNeighbor);
+          if (
+            distanceToNeighbor < distances[`${neighbor.row}-${neighbor.col}`]
+          ) {
+            distances[`${neighbor.row}-${neighbor.col}`] = distanceToNeighbor;
+            prevNodes[`${neighbor.row}-${neighbor.col}`] = currNode;
+            unvisitedNodes.enqueue(neighbor, distanceToNeighbor);
+          }
         }
       });
     }

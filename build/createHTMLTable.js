@@ -1,7 +1,11 @@
-define(["require", "exports"], function (require, exports) {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+define(["require", "exports", "./walls"], function (require, exports, walls_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createHTMLTableFromNodes = void 0;
+    walls_1 = __importDefault(walls_1);
     const tableEl = document.getElementById("grid-table");
     function createHTMLTableFromNodes(ROW_COUNT, COL_COUNT, gridNodes) {
         if (tableEl instanceof HTMLTableElement) {
@@ -15,12 +19,14 @@ define(["require", "exports"], function (require, exports) {
                     if (currentNode.isStart) {
                         cell.classList.add("start-node");
                     }
-                    if (currentNode.isEnd) {
+                    else if (currentNode.isEnd) {
                         cell.classList.add("end-node");
                     }
+                    else if (currentNode.isWall) {
+                        cell.classList.add("wall-node");
+                    }
                     cell.onclick = () => {
-                        console.log(cell.id);
-                        console.log("Node details:", gridNodes[i][j]);
+                        (0, walls_1.default)(currentNode);
                     };
                 }
             }

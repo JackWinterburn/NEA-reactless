@@ -3,6 +3,7 @@ export default class Node {
   row: number;
   isStart: boolean;
   isEnd: boolean;
+  isWall: boolean;
   isVisited: boolean;
   neighbours: Node[];
 
@@ -10,12 +11,14 @@ export default class Node {
     row: number,
     col: number,
     isStart: boolean = false,
-    isEnd: boolean = false
+    isEnd: boolean = false,
+    isWall: boolean = false
   ) {
     this.row = row;
     this.col = col;
     this.isStart = isStart;
     this.isEnd = isEnd;
+    this.isWall = isWall;
     this.isVisited = false;
     this.neighbours = [];
   }

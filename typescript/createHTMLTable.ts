@@ -1,4 +1,5 @@
 import Node from "./node";
+import setWall from "./walls";
 
 const tableEl = document.getElementById("grid-table");
 
@@ -22,15 +23,14 @@ export function createHTMLTableFromNodes(
 
         if (currentNode.isStart) {
           cell.classList.add("start-node");
-        }
-
-        if (currentNode.isEnd) {
+        } else if (currentNode.isEnd) {
           cell.classList.add("end-node");
+        } else if (currentNode.isWall) {
+          cell.classList.add("wall-node");
         }
 
         cell.onclick = () => {
-          console.log(cell.id);
-          console.log("Node details:", gridNodes[i][j]);
+          setWall(currentNode);
         };
       }
     }

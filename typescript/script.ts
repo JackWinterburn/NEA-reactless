@@ -5,10 +5,9 @@ import { dijkstra } from "./dijkstra";
 
 let startNode = new Node(10, 2, true);
 let endNode = new Node(8, 8, false, true);
-const gridNodes = createGrid(startNode, endNode);
 
 const ROW_COUNT = 20;
-const COL_COUNT = 20;
+const COL_COUNT = 40;
 const ALGORITHMS: {
   [key: string]: (s: Node, e: Node, gn: Node[][]) => [Node[], Node[]]; //gross types
 } = {
@@ -16,6 +15,7 @@ const ALGORITHMS: {
 };
 let SELECTED_ALGORITHM = "Dijkstra";
 let VISUALISATION_SPEED = 0.1;
+const gridNodes = createGrid(startNode, endNode, ROW_COUNT, COL_COUNT);
 
 const algorithmSelector = document.getElementById("algorithm-selector");
 if (algorithmSelector instanceof HTMLSelectElement) {
@@ -36,7 +36,7 @@ if (visualisationSpeedSelector instanceof HTMLInputElement) {
 
 createHTMLTableFromNodes(ROW_COUNT, COL_COUNT, gridNodes);
 
-function updateGrid(node: Node, direction: string) {
+function updateTerminalNodePositions(node: Node, direction: string) {
   const { row, col, isStart, isEnd } = node;
   const cell = document.getElementById(`${row}-${col}`);
 
@@ -45,14 +45,22 @@ function updateGrid(node: Node, direction: string) {
     let newCol = col;
 
     switch (direction) {
-      case "up": newRow = Math.max(0, row - 1); break;
-      case "left": newCol = Math.max(0, col - 1); break;
-      case "right": newCol = Math.min(COL_COUNT - 1, col + 1); break;
-      case "down": newRow = Math.min(ROW_COUNT - 1, row + 1); break;
+      case "up":
+        newRow = Math.max(0, row - 1);
+        break;
+      case "left":
+        newCol = Math.max(0, col - 1);
+        break;
+      case "right":
+        newCol = Math.min(COL_COUNT - 1, col + 1);
+        break;
+      case "down":
+        newRow = Math.min(ROW_COUNT - 1, row + 1);
+        break;
     }
 
     if (isStart) {
-      startNode.isStart = false;      
+      startNode.isStart = false;
       startNode = gridNodes[newRow][newCol];
       startNode.isStart = true;
 
@@ -79,18 +87,53 @@ function updateGrid(node: Node, direction: string) {
 
 const directions = ["up", "left", "right", "down"];
 
-directions.forEach(direction => {
+directions.forEach((direction) => {
   const startControl = document.getElementById(`${direction}-start`);
   const endControl = document.getElementById(`${direction}-end`);
 
   if (startControl instanceof HTMLButtonElement) {
-    startControl.onclick = () => updateGrid(startNode, direction);
+    startControl.onclick = () =>
+      updateTerminalNodePositions(startNode, direction);
   }
   if (endControl instanceof HTMLButtonElement) {
-    endControl.onclick = () => updateGrid(endNode, direction);
+    endControl.onclick = () => updateTerminalNodePositions(endNode, direction);
   }
 });
 
+function clearPaths() {
+  gridNodes.forEach((row) => {
+    row.forEach((node) => {
+      node.isVisited = false;
+      const cell = document.getElementById(`${node.row}-${node.col}`);
+      if (cell instanceof HTMLTableCellElement) {
+        cell.classList.remove("visited-cell");
+        cell.classList.remove("shortest-path-cell");
+      }
+    });
+  });
+}
+
+const clearPathsBtn = document.getElementById("clear-paths-btn");
+if (clearPathsBtn instanceof HTMLButtonElement) {
+  clearPathsBtn.onclick = () => clearPaths();
+}
+
+function clearWalls() {
+  gridNodes.forEach((row) => {
+    row.forEach((node) => {
+      node.isWall = false;
+      const cell = document.getElementById(`${node.row}-${node.col}`);
+      if (cell instanceof HTMLTableCellElement) {
+        cell.classList.remove("wall-node");
+      }
+    });
+  });
+}
+
+const clearWallsBtn = document.getElementById("clear-walls-btn");
+if (clearWallsBtn instanceof HTMLButtonElement) {
+  clearWallsBtn.onclick = () => clearWalls();
+}
 
 const startBtn = document.getElementById("start-btn");
 
@@ -119,7 +162,7 @@ function runVisualisation() {
           "shortest-path-cell"
         );
         shortestPathCell.style.animationDelay = `${
-          (idx + 1) * 0.2 - VISUALISATION_SPEED
+          (idx + 1) * (0.2 - VISUALISATION_SPEED)
         }s`;
       }
     });

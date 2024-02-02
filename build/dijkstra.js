@@ -9,7 +9,6 @@ define(["require", "exports", "./priorityQueue"], function (require, exports, pr
     function dijkstra(startNode, endNode, gridNodes) {
         const visitedNodes = [];
         const shortestPathNodes = [];
-        console.log(startNode);
         const unvisitedNodes = new priorityQueue_1.default();
         const distances = {};
         const prevNodes = {};
@@ -36,11 +35,14 @@ define(["require", "exports", "./priorityQueue"], function (require, exports, pr
                     break;
                 }
                 currNode.neighbours.forEach((neighbor) => {
-                    const distanceToNeighbor = distances[`${currNode.row}-${currNode.col}`] + 1;
-                    if (distanceToNeighbor < distances[`${neighbor.row}-${neighbor.col}`]) {
-                        distances[`${neighbor.row}-${neighbor.col}`] = distanceToNeighbor;
-                        prevNodes[`${neighbor.row}-${neighbor.col}`] = currNode;
-                        unvisitedNodes.enqueue(neighbor, distanceToNeighbor);
+                    if (!neighbor.isWall) {
+                        // Skip wall nodes
+                        const distanceToNeighbor = distances[`${currNode.row}-${currNode.col}`] + 1;
+                        if (distanceToNeighbor < distances[`${neighbor.row}-${neighbor.col}`]) {
+                            distances[`${neighbor.row}-${neighbor.col}`] = distanceToNeighbor;
+                            prevNodes[`${neighbor.row}-${neighbor.col}`] = currNode;
+                            unvisitedNodes.enqueue(neighbor, distanceToNeighbor);
+                        }
                     }
                 });
             }
