@@ -1,27 +1,31 @@
 import Node from "./node";
 import PriorityQueue from "./priorityQueue";
 
-export default function dijkstra(
+export default function greedyBestFirstSearch(
   startNode: Node,
   endNode: Node,
   gridNodes: Node[][]
 ): [Node[], Node[]] {
   const visitedNodes: Node[] = [];
   const shortestPathNodes: Node[] = [];
+
+  const heuristic = (node: Node) => {
+    const dx = node.row - endNode.row;
+    const dy = node.col - endNode.col;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
   const unvisitedNodes = new PriorityQueue<Node>();
 
-  const distances: { [key: string]: number } = {};
   const prevNodes: { [key: string]: Node | null } = {};
 
   gridNodes.forEach((row) => {
     row.forEach((node) => {
-      distances[`${node.row}-${node.col}`] = Infinity;
       prevNodes[`${node.row}-${node.col}`] = null;
     });
   });
-  distances[`${startNode.row}-${startNode.col}`] = 0;
 
-  unvisitedNodes.enqueue(startNode, 0);
+  unvisitedNodes.enqueue(startNode, heuristic(startNode));
 
   while (!unvisitedNodes.isEmpty()) {
     const currNode = unvisitedNodes.dequeue();
@@ -42,18 +46,9 @@ export default function dijkstra(
       }
 
       currNode.neighbours.forEach((neighbor) => {
-        if (!neighbor.isWall) {
-          // Skip wall nodes
-          const distanceToNeighbor =
-            distances[`${currNode.row}-${currNode.col}`] + 1;
-
-          if (
-            distanceToNeighbor < distances[`${neighbor.row}-${neighbor.col}`]
-          ) {
-            distances[`${neighbor.row}-${neighbor.col}`] = distanceToNeighbor;
-            prevNodes[`${neighbor.row}-${neighbor.col}`] = currNode;
-            unvisitedNodes.enqueue(neighbor, distanceToNeighbor);
-          }
+        if (!neighbor.isVisited && !neighbor.isWall) {
+          prevNodes[`${neighbor.row}-${neighbor.col}`] = currNode;
+          unvisitedNodes.enqueue(neighbor, heuristic(neighbor));
         }
       });
     }

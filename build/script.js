@@ -1,20 +1,41 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-define(["require", "exports", "./node", "./algDescriptions", "./createGrid", "./createHTMLTable", "./dijkstra", "./learnMore"], function (require, exports, node_1, algDescriptions_1, createGrid_1, createHTMLTable_1, dijkstra_1, learnMore_1) {
+define(["require", "exports", "./node", "./dijkstra", "./greedy", "./dfs", "./astar", "./algDescriptions", "./createGrid", "./createHTMLTable", "./learnMore"], function (require, exports, node_1, dijkstra_1, greedy_1, dfs_1, astar_1, algDescriptions_1, createGrid_1, createHTMLTable_1, learnMore_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     node_1 = __importDefault(node_1);
+    dijkstra_1 = __importDefault(dijkstra_1);
+    greedy_1 = __importDefault(greedy_1);
+    dfs_1 = __importDefault(dfs_1);
     let startNode = new node_1.default(10, 2, true);
     let endNode = new node_1.default(8, 8, false, true);
     const ROW_COUNT = 20;
     const COL_COUNT = 40;
     const ALGORITHMS = {
         Dijkstra: {
-            alg: dijkstra_1.dijkstra,
+            alg: dijkstra_1.default,
             title: "Dijkstra",
             desc: algDescriptions_1.algDescriptions.dijkstra,
             ytVideoID: "pVfj6mxhdMw",
+        },
+        Greedy: {
+            alg: greedy_1.default,
+            title: "Greedy Best First Search",
+            desc: "desc",
+            ytVideoID: "HMAHrQHmrUQ",
+        },
+        DFS: {
+            alg: dfs_1.default,
+            title: "Depth First Search",
+            desc: "DFS desc",
+            ytVideoID: "Urx87-NMm6c",
+        },
+        "A*": {
+            alg: astar_1.aStar,
+            title: "A*",
+            desc: "A* desc",
+            ytVideoID: "71CEj4gKDnE",
         },
     };
     let SELECTED_ALGORITHM = "Dijkstra"; //change the way this works its stupid

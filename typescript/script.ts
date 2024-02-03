@@ -1,9 +1,12 @@
 import Node from "./node";
+import dijkstra from "./dijkstra";
+import greedyBestFirstSearch from "./greedy";
+import depthFirstSearch from "./dfs";
+import { aStar } from "./astar";
 import { algDescriptions } from "./algDescriptions";
 import { Algorithm } from "./types";
 import { createGrid } from "./createGrid";
 import { createHTMLTableFromNodes } from "./createHTMLTable";
-import { dijkstra } from "./dijkstra";
 import { setLearnMoreModal } from "./learnMore";
 
 let startNode = new Node(10, 2, true);
@@ -17,6 +20,24 @@ const ALGORITHMS: { [key: string]: Algorithm } = {
     title: "Dijkstra",
     desc: algDescriptions.dijkstra,
     ytVideoID: "pVfj6mxhdMw",
+  },
+  Greedy: {
+    alg: greedyBestFirstSearch,
+    title: "Greedy Best First Search",
+    desc: "desc",
+    ytVideoID: "HMAHrQHmrUQ",
+  },
+  DFS: {
+    alg: depthFirstSearch,
+    title: "Depth First Search",
+    desc: "DFS desc",
+    ytVideoID: "Urx87-NMm6c",
+  },
+  "A*": {
+    alg: aStar,
+    title: "A*",
+    desc: "A* desc",
+    ytVideoID: "71CEj4gKDnE",
   },
 };
 let SELECTED_ALGORITHM = "Dijkstra"; //change the way this works its stupid
