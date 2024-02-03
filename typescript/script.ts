@@ -1,19 +1,25 @@
 import Node from "./node";
+import { algDescriptions } from "./algDescriptions";
+import { Algorithm } from "./types";
 import { createGrid } from "./createGrid";
 import { createHTMLTableFromNodes } from "./createHTMLTable";
 import { dijkstra } from "./dijkstra";
+import { setLearnMoreModal } from "./learnMore";
 
 let startNode = new Node(10, 2, true);
 let endNode = new Node(8, 8, false, true);
 
 const ROW_COUNT = 20;
 const COL_COUNT = 40;
-const ALGORITHMS: {
-  [key: string]: (s: Node, e: Node, gn: Node[][]) => [Node[], Node[]]; //gross types
-} = {
-  Dijkstra: dijkstra,
+const ALGORITHMS: { [key: string]: Algorithm } = {
+  Dijkstra: {
+    alg: dijkstra,
+    title: "Dijkstra",
+    desc: algDescriptions.dijkstra,
+    ytVideoID: "pVfj6mxhdMw",
+  },
 };
-let SELECTED_ALGORITHM = "Dijkstra";
+let SELECTED_ALGORITHM = "Dijkstra"; //change the way this works its stupid
 let VISUALISATION_SPEED = 0.1;
 const gridNodes = createGrid(startNode, endNode, ROW_COUNT, COL_COUNT);
 
@@ -22,8 +28,10 @@ if (algorithmSelector instanceof HTMLSelectElement) {
   Object.keys(ALGORITHMS).forEach((algorithm) =>
     algorithmSelector.add(new Option(algorithm))
   );
-  algorithmSelector.onchange = () =>
-    (SELECTED_ALGORITHM = algorithmSelector.value);
+  algorithmSelector.onchange = () => {
+    SELECTED_ALGORITHM = algorithmSelector.value;
+    setLearnMoreModal(ALGORITHMS[SELECTED_ALGORITHM]);
+  };
 }
 
 const visualisationSpeedSelector = document.getElementById(
@@ -35,6 +43,7 @@ if (visualisationSpeedSelector instanceof HTMLInputElement) {
 }
 
 createHTMLTableFromNodes(ROW_COUNT, COL_COUNT, gridNodes);
+setLearnMoreModal(ALGORITHMS[SELECTED_ALGORITHM]);
 
 function updateTerminalNodePositions(node: Node, direction: string) {
   const { row, col, isStart, isEnd } = node;
@@ -138,7 +147,7 @@ if (clearWallsBtn instanceof HTMLButtonElement) {
 const startBtn = document.getElementById("start-btn");
 
 function runVisualisation() {
-  const [visitedNodes, shortestPathNodes] = ALGORITHMS[SELECTED_ALGORITHM](
+  const [visitedNodes, shortestPathNodes] = ALGORITHMS[SELECTED_ALGORITHM].alg(
     startNode,
     endNode,
     gridNodes

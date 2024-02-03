@@ -7,9 +7,25 @@
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/cells.css" />
     <link rel="stylesheet" href="./css/controlBar.css" />
+    <link rel="stylesheet" href="./css/modal.css" />
   </head>
 
   <body>
+    <div class="overlay" id="overlay"></div>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <h1 id="learn-more-title">title</h1>
+        <br>
+        <p id="learn-more-description">
+          This is some dummy text for the Learn More modal.
+        </p>
+        <br>
+        <iframe id="learn-more-video" width="420" height="315"
+src="https://www.youtube.com/embed/pVfj6mxhdMw">
+</iframe>
+      </div>
+    </div>
     <header>
       <div class="grid-control-bar">
         <div class="selection">

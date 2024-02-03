@@ -1,9 +1,9 @@
 .grid-control-bar {
-  width: 100vw;
+  max-width: 770px;
   height: 25vh;
-  background-color: rgb(37, 39, 48);
+  margin: auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
 }
@@ -19,7 +19,7 @@ button:hover {
 }
 
 .d-pad-controls {
-  width: 30vw;
+  max-width: 770px;
   display: flex;
   align-items: center;
 }
@@ -145,6 +145,6 @@ button:hover {
 
 /* Style the header */
 header {
-  background-color: #333;
+  background-color: rgb(37, 39, 48);
   color: white;
 }

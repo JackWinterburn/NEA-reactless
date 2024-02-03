@@ -1,7 +1,7 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./dijkstra"], function (require, exports, node_1, createGrid_1, createHTMLTable_1, dijkstra_1) {
+define(["require", "exports", "./node", "./algDescriptions", "./createGrid", "./createHTMLTable", "./dijkstra", "./learnMore"], function (require, exports, node_1, algDescriptions_1, createGrid_1, createHTMLTable_1, dijkstra_1, learnMore_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     node_1 = __importDefault(node_1);
@@ -10,21 +10,30 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
     const ROW_COUNT = 20;
     const COL_COUNT = 40;
     const ALGORITHMS = {
-        Dijkstra: dijkstra_1.dijkstra,
+        Dijkstra: {
+            alg: dijkstra_1.dijkstra,
+            title: "Dijkstra",
+            desc: algDescriptions_1.algDescriptions.dijkstra,
+            ytVideoID: "pVfj6mxhdMw",
+        },
     };
-    let SELECTED_ALGORITHM = "Dijkstra";
+    let SELECTED_ALGORITHM = "Dijkstra"; //change the way this works its stupid
     let VISUALISATION_SPEED = 0.1;
     const gridNodes = (0, createGrid_1.createGrid)(startNode, endNode, ROW_COUNT, COL_COUNT);
     const algorithmSelector = document.getElementById("algorithm-selector");
     if (algorithmSelector instanceof HTMLSelectElement) {
         Object.keys(ALGORITHMS).forEach((algorithm) => algorithmSelector.add(new Option(algorithm)));
-        algorithmSelector.onchange = () => (SELECTED_ALGORITHM = algorithmSelector.value);
+        algorithmSelector.onchange = () => {
+            SELECTED_ALGORITHM = algorithmSelector.value;
+            (0, learnMore_1.setLearnMoreModal)(ALGORITHMS[SELECTED_ALGORITHM]);
+        };
     }
     const visualisationSpeedSelector = document.getElementById("visualisation-speed-selector");
     if (visualisationSpeedSelector instanceof HTMLInputElement) {
         visualisationSpeedSelector.onchange = () => (VISUALISATION_SPEED = Number(visualisationSpeedSelector.value));
     }
     (0, createHTMLTable_1.createHTMLTableFromNodes)(ROW_COUNT, COL_COUNT, gridNodes);
+    (0, learnMore_1.setLearnMoreModal)(ALGORITHMS[SELECTED_ALGORITHM]);
     function updateTerminalNodePositions(node, direction) {
         const { row, col, isStart, isEnd } = node;
         const cell = document.getElementById(`${row}-${col}`);
@@ -111,7 +120,7 @@ define(["require", "exports", "./node", "./createGrid", "./createHTMLTable", "./
     }
     const startBtn = document.getElementById("start-btn");
     function runVisualisation() {
-        const [visitedNodes, shortestPathNodes] = ALGORITHMS[SELECTED_ALGORITHM](startNode, endNode, gridNodes);
+        const [visitedNodes, shortestPathNodes] = ALGORITHMS[SELECTED_ALGORITHM].alg(startNode, endNode, gridNodes);
         visitedNodes.forEach((node, idx) => {
             const cell = document.getElementById(`${node.row}-${node.col}`);
             if (cell) {
