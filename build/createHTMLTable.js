@@ -7,6 +7,7 @@ define(["require", "exports", "./walls"], function (require, exports, walls_1) {
     exports.createHTMLTableFromNodes = void 0;
     walls_1 = __importDefault(walls_1);
     const tableEl = document.getElementById("grid-table");
+    let isMouseDown = false;
     function createHTMLTableFromNodes(ROW_COUNT, COL_COUNT, gridNodes) {
         if (tableEl instanceof HTMLTableElement) {
             for (let i = 0; i < ROW_COUNT; i++) {
@@ -25,8 +26,17 @@ define(["require", "exports", "./walls"], function (require, exports, walls_1) {
                     else if (currentNode.isWall) {
                         cell.classList.add("wall-node");
                     }
-                    cell.onclick = () => {
+                    cell.onmousedown = () => {
+                        isMouseDown = true;
                         (0, walls_1.default)(currentNode);
+                    };
+                    cell.onmousemove = () => {
+                        if (isMouseDown && !currentNode.isWall) {
+                            (0, walls_1.default)(currentNode);
+                        }
+                    };
+                    cell.onmouseup = () => {
+                        isMouseDown = false;
                     };
                 }
             }

@@ -3,6 +3,8 @@ import setWall from "./walls";
 
 const tableEl = document.getElementById("grid-table");
 
+let isMouseDown = false;
+
 export function createHTMLTableFromNodes(
   ROW_COUNT: number,
   COL_COUNT: number,
@@ -14,11 +16,9 @@ export function createHTMLTableFromNodes(
 
       for (let j = 0; j < COL_COUNT; j++) {
         const cell = row.insertCell();
-
         const currentNode = gridNodes[i][j];
 
         cell.id = `${i}-${j}`;
-
         cell.classList.add("cell");
 
         if (currentNode.isStart) {
@@ -29,8 +29,19 @@ export function createHTMLTableFromNodes(
           cell.classList.add("wall-node");
         }
 
-        cell.onclick = () => {
+        cell.onmousedown = () => {
+          isMouseDown = true;
           setWall(currentNode);
+        };
+
+        cell.onmousemove = () => {
+          if (isMouseDown && !currentNode.isWall) {
+            setWall(currentNode);
+          }
+        };
+
+        cell.onmouseup = () => {
+          isMouseDown = false;
         };
       }
     }
