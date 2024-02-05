@@ -10,8 +10,8 @@ define(["require", "exports", "./node", "./dijkstra", "./greedy", "./dfs", "./as
     dfs_1 = __importDefault(dfs_1);
     let startNode = new node_1.default(10, 2, true);
     let endNode = new node_1.default(8, 8, false, true);
-    const ROW_COUNT = 20;
-    const COL_COUNT = 40;
+    const ROW_COUNT = Math.floor((window.innerHeight * 0.75) / 20);
+    const COL_COUNT = Math.floor(window.innerWidth / 20);
     const ALGORITHMS = {
         Dijkstra: {
             alg: dijkstra_1.default,

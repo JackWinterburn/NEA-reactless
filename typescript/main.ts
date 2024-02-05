@@ -12,8 +12,8 @@ import { setLearnMoreModal } from "./learnMore";
 let startNode = new Node(10, 2, true);
 let endNode = new Node(8, 8, false, true);
 
-const ROW_COUNT = 20;
-const COL_COUNT = 40;
+const ROW_COUNT = Math.floor((window.innerHeight * 0.75) / 20);
+const COL_COUNT = Math.floor(window.innerWidth / 20);
 const ALGORITHMS: { [key: string]: Algorithm } = {
   Dijkstra: {
     alg: dijkstra,

@@ -14,6 +14,14 @@ define(["require", "exports"], function (require, exports) {
         reset() {
             this.isVisited = false;
         }
+        getUnvisitedNeighbours() {
+            const unvisitedNeighbours = [];
+            this.neighbours.forEach((neighbour) => {
+                if (!neighbour.isVisited)
+                    unvisitedNeighbours.push(neighbour);
+            });
+            return unvisitedNeighbours;
+        }
         addNeighbour(neighbour) {
             this.neighbours.push(neighbour);
         }

@@ -9,13 +9,13 @@
 .visited-cell {
   animation: visitedNodeAnimation;
   animation-fill-mode: forwards;
-  animation-duration: 0.4s;
+  animation-duration: 0.2s;
 }
 
 .shortest-path-cell {
   background-color: rgba(0, 190, 218, 0.75);
   animation: shortestPathNodeAnimation;
-  animation-duration: 0.2s;
+  animation-duration: 1s;
   animation-fill-mode: forwards;
 }
 
@@ -30,49 +30,30 @@
 .wall-node {
   background-color: black;
   animation: wallAnimation;
-  animation-duration: 0.2s
+  animation-duration: 0.2s;
 }
 
 @keyframes shortestPathNodeAnimation {
-  /* from {
-    background-color: blue;
+  from {
+    background-color: rgba(0, 190, 218, 0.75);
   }
 
   to {
-    background-color: rgb(251, 255, 0);
-  } */
-  0% {
-    transform: scale(0.3);
-    background-color: rgba(66, 65, 0, 0.75);
-    border-radius: 100%;
-  }
-
-  50% {
-    background-color: rgb(238, 255, 0);
-  }
-
-  75% {
-    transform: scale(1.2);
-    background-color: rgb(255, 251, 0);
-  }
-
-  100% {
-    transform: scale(1);
     background-color: rgb(238, 255, 0);
   }
 }
 
 /* Define the animation for visited nodes */
 @keyframes visitedNodeAnimation {
-  /* from {
+  from {
     background-color: white;
   }
 
   to {
-    background-color: blue;
-  } */
+    background-color: rgba(0, 190, 218, 0.75);
+  }
 
-  0% {
+  /* 0% {
     transform: scale(0.3);
     background-color: rgba(0, 0, 66, 0.75);
     border-radius: 100%;
@@ -90,7 +71,7 @@
   100% {
     transform: scale(1);
     background-color: rgba(0, 190, 218, 0.75);
-  }
+  } */
 }
 
 @keyframes wallAnimation {

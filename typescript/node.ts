@@ -27,6 +27,14 @@ export default class Node {
     this.isVisited = false;
   }
 
+  getUnvisitedNeighbours() {
+    const unvisitedNeighbours: Node[] = [];
+    this.neighbours.forEach((neighbour) => {
+      if (!neighbour.isVisited) unvisitedNeighbours.push(neighbour);
+    });
+    return unvisitedNeighbours;
+  }
+
   addNeighbour(neighbour: Node) {
     this.neighbours.push(neighbour);
   }
